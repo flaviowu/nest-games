@@ -19,6 +19,19 @@
             "database": "olopkqmx",
             "username": "olopkqmx",
             "password": "Vb7e7X503n5Gfkt9ZgxarLbcPIKF6CYe"
+        },
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "localMySQL",
+            "database": "nest-games",
+            "username": "root",
+            "password": ""
         }
     ]
 }

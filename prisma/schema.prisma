@@ -10,49 +10,80 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User{
+model sysAdmin{
+  id              Int           @id @default(autoincrement())
+  createdAt       DateTime      @default(now())
+  name            String        @default("admin01")
+  password        String
+  isSysAdmin      Boolean       @default(true)
+}
+
+model Account{
   id              Int         @id @default(autoincrement())
-  createAt        DateTime    @default(now())
+  createdAt       DateTime    @default(now())
   name            String      @unique
   surname         String
   email           String      @unique
-  password        String      @db.Char(11) @unique
+  password        String
+  cpf             String      @db.Char(11) @unique
   
   profiles        Profile[]
-  favGames        Game[]
+
+  gamesOwned      GamesOnAccount[]
 }
+
 
 model Profile{
   id            	Int           @id @default(autoincrement())
-  createAt        DateTime      @default(now())
+  createdAt       DateTime      @default(now())
+  isAdmin         Boolean       @default(false)
   title           String
   image           String
   
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId          Int
+  account         Account        @relation(fields: [accountId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  accountId       Int
 }
 
 model Game{
   id              Int           @id @default(autoincrement())
-  createAt        DateTime      @default(now())
+  createdAt       DateTime      @default(now())
   title           String
   cover           String
   year            String        @db.Char(4)
   description     String
   trailer         String
   gameplay        String
-  rating          Int?          
-  genre           Genre[]         
+  rating          Int?
   
-  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId          Int
+  inGenre         GamesOnGenre[]
+
+  ownedByAcc      GamesOnAccount[]
+
 }
 
 model Genre{
   id              Int           @id @default(autoincrement()) 
-  createAt        DateTime      @default(now())
+  createdAt       DateTime      @default(now())
   name            String
   
-  game            Game          @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  inGame          GamesOnGenre[]
+}
+
+model GamesOnAccount{
+  account         Account   @relation(fields: [accountId], references: [id], onDelete: NoAction, onUpdate: Cascade)
+  accountId       Int
+  game            Game      @relation(fields: [gameId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   gameId          Int
+  assignedAt      DateTime  @default(now())
+  
+  @@id([accountId, gameId])
+}
+
+model GamesOnGenre{
+  game            Game      @relation(fields: [gameId], references: [id], onDelete:NoAction, onUpdate: Cascade)
+  gameId          Int
+  genre           Genre     @relation(fields: [genreId], references: [id], onDelete:NoAction, onUpdate: Cascade)
+  genreId         Int
+
+  @@id([gameId, genreId])
 }
