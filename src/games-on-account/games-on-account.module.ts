@@ -4,6 +4,6 @@ import { GamesOnAccountController } from './games-on-account.controller';
 
 @Module({
   controllers: [GamesOnAccountController],
-  providers: [GamesOnAccountService]
+  providers: [GamesOnAccountService],
 })
 export class GamesOnAccountModule {}
