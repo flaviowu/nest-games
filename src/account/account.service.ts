@@ -22,12 +22,34 @@ export class AccountService {
             image: true,
           },
         },
+        gamesOwned: {
+          select: {
+            gameId: true,
+          },
+        },
       },
     });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} account`;
+    // return `This action returns a #${id} account`;
+    return this.prisma.account.findUnique({
+      where: { id },
+      include: {
+        profiles: {
+          select: {
+            id: true,
+            title: true,
+            image: true,
+          },
+        },
+        gamesOwned: {
+          select: {
+            gameId: true,
+          },
+        },
+      },
+    });
   }
 
   update(id: number, updateAccountDto: UpdateAccountDto) {
