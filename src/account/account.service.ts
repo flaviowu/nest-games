@@ -7,8 +7,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class AccountService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(createAccountDto: CreateAccountDto) {
-    return 'This action adds a new account';
+  create(data: CreateAccountDto) {
+    // return 'This action adds a new account';
+    return this.prisma.account.create({
+      data,
+    });
   }
 
   findAll() {
@@ -52,11 +55,18 @@ export class AccountService {
     });
   }
 
-  update(id: number, updateAccountDto: UpdateAccountDto) {
-    return `This action updates a #${id} account`;
+  update(id: number, data: UpdateAccountDto) {
+    // return `This action updates a #${id} account`;
+    return this.prisma.account.update({
+      where: { id },
+      data,
+    });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} account`;
+    // return `This action removes a #${id} account`;
+    return this.prisma.account.delete({
+      where: { id },
+    });
   }
 }
